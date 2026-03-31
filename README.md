@@ -16,14 +16,19 @@ This repository contains solutions for the Markov Chain questions with three par
 To run the complete analysis:
 
 ```r
-# Set working directory to the question folder
-setwd("path/to/R227505V-Zvikomborero-Shumba--Stochastic-Assignment-")
+# Set working directory to the assignment folder
+setwd("C:/Users/USER/Desktop/ASSIGNMENTSTOCHASTIC")
 
 # Execute the analysis
 source("run_assignment.R")
 ```
 
-**Note**: Make sure to replace the path with the actual location where you downloaded the repository.
+**Note**: All results will be generated in the `STOCHASTIC_RESULTS/` folder with organized subdirectories:
+- `A1_Results/` - Question 1 outputs
+- `A2_Results/` - Question 2 outputs  
+- `A3_Results/` - Question 3 outputs
+- `Results_Summary.txt` - Complete analysis summary
+- `Summary/` - Final summary CSV
 
 ## Requirements
 - R (version 4.0+)
