@@ -1,0 +1,59 @@
+STOCHASTIC MARKOV CHAIN ANALYSIS — RESULTS SUMMARY
+Generated: 2026-03-31 18:00:15.801783
+
+==================================================== 
+A2: 7-STATE MARKOV CHAIN ANALYSIS 
+==================================================== 
+A2(a): Transition diagram saved as A2a_diagram.png 
+A2(b): Classification 
+Recurrent class: {S1, S2}  — closed, period d=2, reflecting pair 
+Transient class: {S3,S4,S5,S6,S7} 
+Absorbing states: NONE 
+Reflecting states: S1 and S2 (mutual reflectors, P(S1->S2)=P(S2->S1)=1) 
+Periods: S1=2, S2=2, S3=1, S4=1, S5=1 (self-loop), S6=1 (self-loop), S7=1 (self-loop) 
+A2(c): Two simulated trajectories plotted. 
+Discussion: 
+Once either path enters {S1,S2} it alternates S1<->S2 forever (period-2). 
+Time in transient region varies; S5 provides the escape with p=0.3 per visit. 
+S3, if visited, is left after exactly one step and never revisited. 
+A2(d): Limiting probabilities and ergodicity 
+Limiting / stationary (Cesaro) probabilities: 
+pi = (0.5, 0.5, 0, 0, 0, 0, 0) 
+Interpretation: chain concentrates on {S1,S2} long-run, 50/50. 
+Is the chain ergodic? NO. 
+Reasons: (1) Reducible — S1 cannot reach S3-S7. 
+         (2) Recurrent class {S1,S2} has period d=2 (periodic). 
+         Cesaro-sense limit exists but strong ergodic theorem fails. 
+==================================================== 
+A3: NON-HOMOGENEOUS TRAFFIC MODEL 
+==================================================== 
+Correction applied: P13 row-2 uses 0.4 (not 0.5). 
+P13 (1 PM - 4 PM): [[0.4,0.4,0.2],[0.3,0.4,0.3],[0,0.1,0.9]] 
+P46 (4 PM - 6 PM): [[0.1,0.5,0.4],[0.1,0.3,0.6],[0,0.1,0.9]] 
+A3(a): Distribution at 6 PM 
+1 PM to 4 PM = 3 hrs = 9 steps of 20 min each -> P13^9 
+4 PM to 6 PM = 2 hrs = 6 steps of 20 min each -> P46^6 
+P(Light at 6PM)  = 0.014801 
+P(Heavy at 6PM)  = 0.132596 
+P(Jammed at 6PM) = 0.852603 
+Most likely state at 6PM: Jammed 
+Interpretation: By 6PM, jammed traffic is most probable. 
+A3(b): Monte Carlo simulation with N=10,000 trajectories 
+Simulated proportions closely match exact values from A3(a). 
+Maximum absolute error: 
+0.004097 
+Comment: Monte Carlo verifies the analytical result. By 6 PM, 
+jammed traffic is most probable, confirming peak-hour congestion. 
+==================================================== 
+FINAL SUMMARY 
+==================================================== 
+A1(a): C1={S1} absorbing; C2={S2} transient; C3={S3,S4,S5} transient period-3; no reflecting states 
+A1(b): 3 trajectories all absorb into S1; period-3 cycling visible 
+A1(c): pi=(1,0,0,0,0); NOT ergodic 
+A1(d): Convergence to pi=(1,0,0,0,0); period-3 oscillations from S3 start 
+A2(a): Diagram saved as A2a_diagram.png 
+A2(b): Recurrent {S1,S2} period-2 reflecting pair; transient {S3–S7}; no absorbing; no reflecting (other than S1,S2 pair) 
+A2(c): Both paths absorbed into {S1,S2}; S1<->S2 oscillation clearly visible 
+A2(d): Cesaro limit pi=(0.5,0.5,0,0,0,0,0); NOT ergodic (reducible + periodic) 
+A3(a): P(Light)=0.0148  P(Heavy)=0.1326  P(Jammed)=0.8526 
+A3(b): MC sim (N=10000): P(Light)=0.0146 P(Heavy)=0.1287 P(Jammed)=0.8567 

@@ -1,0 +1,4 @@
+"State","Simulated","Exact","Absolute_Error"
+"Light",0.0146,0.014801,0.000201
+"Heavy",0.1287,0.132596,0.003896
+"Jammed",0.8567,0.852603,0.004097

@@ -1,0 +1,8 @@
+"State","Class","Period","Notes"
+"S1","Recurrent",2,"Reflecting pair"
+"S2","Recurrent",2,"Reflecting pair"
+"S3","Transient",1,"Isolated singleton"
+"S4","Transient",1,"Aperiodic"
+"S5","Transient",1,"Self-loop d=1"
+"S6","Transient",1,"Self-loop d=1"
+"S7","Transient",1,"Self-loop d=1"
