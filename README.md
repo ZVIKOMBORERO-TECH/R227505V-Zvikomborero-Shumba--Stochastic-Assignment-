@@ -35,6 +35,6 @@ The analysis includes:
 - Multiple trajectory simulations
 
 ## Author
-Student Name: [Your Name]
-Student ID: [Your ID]
+Student Name: [Zvikomborero Shumba]
+Student ID: [R227505V]
 Course: HASTS416/RM
