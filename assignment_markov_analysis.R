@@ -448,7 +448,7 @@ mc2 <- new("markovchain",
 # ----------------------------------------------------------
 cat("\nQ2/A2(a)\n")
 cat("Plotting diagram for Q2/A2...\n")
-png("chivama_A2_diagram.png", width = 800, height = 600)
+png("A2_diagram.png", width = 800, height = 600)
 plot(mc2, main = "Q2/A2(a): 7-State Markov Chain Diagram")
 dev.off()
 
@@ -488,7 +488,7 @@ trajectories_a2_df <- data.frame(
 )
 write.csv(trajectories_a2_df, file.path(results_dir, "11_A2_trajectories_data.csv"), row.names = FALSE)
 
-png("chivama_A2_trajectories.png", width = 800, height = 600)
+png("A2_trajectories.png", width = 800, height = 600)
 matplot(rbind(a2_path1, a2_path2),
         type = "l", lty = 1, lwd = 2,
         xlab = "Time", ylab = "State",
@@ -614,7 +614,7 @@ comparison_df <- data.frame(
 )
 write.csv(comparison_df, file.path(results_dir, "09_A3_analytical_vs_simulated_comparison.csv"), row.names = FALSE)
 
-png("chivama_A3_simulation.png", width = 800, height = 600)
+png("A3_simulation.png", width = 800, height = 600)
 barplot(sim_vector,
         main = "Q3/A3(b): Simulated distribution at 6 PM",
         ylab = "Proportion",
