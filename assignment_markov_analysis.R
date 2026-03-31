@@ -1,8 +1,8 @@
 # ============================================================
-#   HASTS416/RM MARKOV CHAIN ASSIGNMENT
-#   A1: 5-State Markov Chain Analysis
-#   A2: 7-State Markov Chain Analysis  
-#   A3: Non-Homogeneous Traffic Model
+#   HASTS416/RM MARKOV CHAIN QUESTIONS
+#   Q1/A1: 5-State Markov Chain Analysis
+#   Q2/A2: 7-State Markov Chain Analysis  
+#   Q3/A3: Non-Homogeneous Traffic Model
 # ============================================================
 
 # Clear workspace and set seed for reproducibility
@@ -101,11 +101,11 @@ draw_self_loop <- function(cx, cy, r_node = 0.38, r_loop = 0.52,
 }
 
 # ============================================================
-#   A1: 5-STATE MARKOV CHAIN ANALYSIS
+#   Q1/A1: 5-STATE MARKOV CHAIN ANALYSIS
 # ============================================================
 
 cat("╔══════════════════════════════════════════════╗\n")
-cat("║       A1: 5-STATE MARKOV CHAIN ANALYSIS      ║\n")
+cat("║    Q1/A1: 5-STATE MARKOV CHAIN ANALYSIS       ║\n")
 cat("╚══════════════════════════════════════════════╝\n\n")
 
 # Transition Matrix from assignment
@@ -124,9 +124,9 @@ print(P_A1)
 # Save transition matrix to CSV
 write.csv(P_A1, file.path(results_dir, "01_A1_transition_matrix.csv"), row.names = TRUE)
 
-# A1(a): Diagram & Classification
+# Q1/A1(a): Diagram & Classification
 cat("\n══════════════════════════════════════════════\n")
-cat("  A1(a): DIAGRAM & CLASSIFICATION\n")
+cat("  Q1/A1(a): DIAGRAM & CLASSIFICATION\n")
 cat("══════════════════════════════════════════════\n")
 
 # Node positions for 5-state chain
@@ -224,9 +224,9 @@ cat("   S3 : d = 3  (shortest return S3→S5→S4→S3, length 3)\n")
 cat("   S4 : d = 3  (shortest return S4→S3→S5→S4, length 3)\n")
 cat("   S5 : d = 3  (shortest return S5→S4→S3→S5, length 3)\n")
 
-# A1(b): Simulated Trajectories
+# Q1/A1(b): Simulated Trajectories
 cat("\n══════════════════════════════════════════════\n")
-cat("  A1(b): SIMULATED TRAJECTORIES\n")
+cat("  Q1/A1(b): SIMULATED TRAJECTORIES\n")
 cat("══════════════════════════════════════════════\n")
 
 n_steps_A1 <- 60
@@ -284,9 +284,9 @@ cat("   • S2 is resolved in exactly ONE step (→ S1 or S5).\n")
 cat("   • Longer absorption times occur when the chain repeatedly re-enters\n")
 cat("     the 3-cycle and misses the escape probability.\n")
 
-# A1(c): Steady-State & Ergodicity
+# Q1/A1(c): Steady-State & Ergodicity
 cat("\n══════════════════════════════════════════════\n")
-cat("  A1(c): STEADY-STATE PROBABILITIES & ERGODICITY\n")
+cat("  Q1/A1(c): STEADY-STATE PROBABILITIES & ERGODICITY\n")
 cat("══════════════════════════════════════════════\n")
 
 # Power iteration
@@ -331,9 +331,9 @@ cat("   (ii) Positive recurrence — only S1; S2–S5 are transient.\n")
 cat("   (iii)Aperiodicity     — fails for S3,S4,S5 (d = 3).\n")
 cat("   ∴  The chain is NOT ergodic.\n")
 
-# A1(d): Convergence Analysis
+# Q1/A1(d): Convergence Analysis
 cat("\n══════════════════════════════════════════════\n")
-cat("  A1(d): CONVERGENCE TO STEADY STATE\n")
+cat("  Q1/A1(d): CONVERGENCE TO STEADY STATE\n")
 cat("══════════════════════════════════════════════\n")
 
 n_time_A1 <- 80
@@ -410,20 +410,17 @@ cat("   • The chain is not uniformly ergodic; convergence is modulated\n")
 cat("     by the second-largest eigenvalue of P restricted to {S3,S4,S5}.\n")
 
 # ============================================================
-#   A2: 7-STATE MARKOV CHAIN ANALYSIS
+#   Q2/A2: 7-STATE MARKOV CHAIN ANALYSIS
 # ============================================================
 
 cat("\n\n╔══════════════════════════════════════════════╗\n")
-cat("║       A2: 7-STATE MARKOV CHAIN ANALYSIS      ║\n")
+cat("║    Q2/A2: 7-STATE MARKOV CHAIN ANALYSIS       ║\n")
 cat("╚══════════════════════════════════════════════╝\n\n")
 
-
-
-
-# A2
+# Q2/A2
 # ==========================================================
 cat("\n====================================================\n")
-cat("A2\n")
+cat("Q2/A2\n")
 cat("====================================================\n")
 
 P2 <- matrix(c(
@@ -447,19 +444,19 @@ mc2 <- new("markovchain",
            transitionMatrix = P2)
 
 # ----------------------------------------------------------
-# A2(a) Plot the Markov chain diagram
+# Q2/A2(a) Plot the Markov chain diagram
 # ----------------------------------------------------------
-cat("\nA2(a)\n")
-cat("Plotting diagram for A2...\n")
+cat("\nQ2/A2(a)\n")
+cat("Plotting diagram for Q2/A2...\n")
 png("chivama_A2_diagram.png", width = 800, height = 600)
-plot(mc2, main = "A2(a): 7-State Markov Chain Diagram")
+plot(mc2, main = "Q2/A2(a): 7-State Markov Chain Diagram")
 dev.off()
 
 # ----------------------------------------------------------
-# A2(b) Identify recurrent/transient classes, periods,
+# Q2/A2(b) Identify recurrent/transient classes, periods,
 #       absorbing and reflecting states
 # ----------------------------------------------------------
-cat("\nA2(b)\n")
+cat("\nQ2/A2(b)\n")
 cat("Recurrent class: {1,2}\n")
 cat("Transient class: {3,4,5,6,7}\n")
 cat("Absorbing states: none\n")
@@ -474,9 +471,9 @@ cat("d(6) = 1\n")
 cat("d(7) = 1\n")
 
 # ----------------------------------------------------------
-# A2(c) Simulate two trajectories and discuss
+# Q2/A2(c) Simulate two trajectories and discuss
 # ----------------------------------------------------------
-cat("\nA2(c)\n")
+cat("\nQ2/A2(c)\n")
 set.seed(321)
 
 a2_path1 <- simulate_path(P2, 30)
@@ -495,7 +492,7 @@ png("chivama_A2_trajectories.png", width = 800, height = 600)
 matplot(rbind(a2_path1, a2_path2),
         type = "l", lty = 1, lwd = 2,
         xlab = "Time", ylab = "State",
-        main = "A2(c): Two simulated trajectories")
+        main = "Q2/A2(c): Two simulated trajectories")
 legend("topright",
        legend = c("Path 1", "Path 2"),
        col = 1:2, lty = 1, lwd = 2)
@@ -507,10 +504,10 @@ cat("but once it enters the class {1,2}, it alternates forever between 1 and 2.\
 cat("This shows that {1,2} is a closed recurrent class, while {3,4,5,6,7} is transient.\n")
 
 # ----------------------------------------------------------
-# A2(d) Calculate limiting probabilities and interpret
+# Q2/A2(d) Calculate limiting probabilities and interpret
 #       Is the chain ergodic?
 # ----------------------------------------------------------
-cat("\nA2(d)\n")
+cat("\nQ2/A2(d)\n")
 pi2 <- stationary_dist(P2)
 names(pi2) <- states2
 
@@ -534,10 +531,10 @@ cat("so the chain is not ergodic.\n")
 
 
 # ============================================================
-#   A3: NON-HOMOGENEOUS TRAFFIC MODEL
+#   Q3/A3: NON-HOMOGENEOUS TRAFFIC MODEL
 # ============================================================
 
-cat("\nA3(a)\n")
+cat("\nQ3/A3(a)\n")
 cat("From 1 PM to 4 PM = 3 hours = 9 steps of 20 minutes each.\n")
 cat("From 4 PM to 6 PM = 2 hours = 6 steps of 20 minutes each.\n")
 
@@ -564,9 +561,9 @@ cat("Interpretation:\n")
 cat("By 6 PM, traffic is most likely to be jammed.\n")
 
 # ----------------------------------------------------------
-# A3(b) Simulate 10,000 trajectories to verify the result
+# Q3/A3(b) Simulate 10,000 trajectories to verify the result
 # ----------------------------------------------------------
-cat("\nA3(b)\n")
+cat("\nQ3/A3(b)\n")
 simulate_traffic <- function() {
   state <- 1   # 1=light, 2=heavy, 3=jammed
   
@@ -619,13 +616,13 @@ write.csv(comparison_df, file.path(results_dir, "09_A3_analytical_vs_simulated_c
 
 png("chivama_A3_simulation.png", width = 800, height = 600)
 barplot(sim_vector,
-        main = "A3(b): Simulated distribution at 6 PM",
+        main = "Q3/A3(b): Simulated distribution at 6 PM",
         ylab = "Proportion",
         names.arg = c("light", "heavy", "jammed"))
 dev.off()
 
 cat("Comment:\n")
-cat("The simulated proportions should be close to the exact probabilities found in A3(a),\n")
+cat("The simulated proportions should be close to the exact probabilities found in Q3/A3(a),\n")
 cat("thereby verifying the result.\n")
 
 # ==========================================================
@@ -635,23 +632,23 @@ cat("\n====================================================\n")
 cat("FINAL SUMMARY OF ANSWERS\n")
 cat("====================================================\n")
 
-cat("\nA1 Summary:\n")
-cat("A1(a): Transient classes = {2}, {3,4,5}; Recurrent class = {1}; Absorbing state = 1; Reflecting state = 1;\n")
+cat("\nQ1/A1 Summary:\n")
+cat("Q1/A1(a): Transient classes = {2}, {3,4,5}; Recurrent class = {1}; Absorbing state = 1; Reflecting state = 1;\n")
 cat("       Periods: d(1)=1, d(2)=undefined, d(3)=d(4)=d(5)=3.\n")
-cat("A1(b): Three simulated trajectories eventually end in state 1.\n")
-cat("A1(c): Steady-state probabilities = (1,0,0,0,0). Chain is not ergodic.\n")
-cat("A1(d): Unconditional probabilities converge to (1,0,0,0,0).\n")
+cat("Q1/A1(b): Three simulated trajectories eventually end in state 1.\n")
+cat("Q1/A1(c): Steady-state probabilities = (1,0,0,0,0). Chain is not ergodic.\n")
+cat("Q1/A1(d): Unconditional probabilities converge to (1,0,0,0,0).\n")
 
-cat("\nA2 Summary:\n")
-cat("A2(a): Diagram plotted.\n")
-cat("A2(b): Recurrent class = {1,2}; Transient class = {3,4,5,6,7}; Absorbing states = none; Reflecting states = 5,6,7.\n")
+cat("\nQ2/A2 Summary:\n")
+cat("Q2/A2(a): Diagram plotted.\n")
+cat("Q2/A2(b): Recurrent class = {1,2}; Transient class = {3,4,5,6,7}; Absorbing states = none; Reflecting states = 5,6,7.\n")
 cat("       Periods: d(1)=2, d(2)=2, d(3)=undefined, d(4)=d(5)=d(6)=d(7)=1.\n")
-cat("A2(c): Simulated trajectories show eventual entry into {1,2}, after which the chain alternates between 1 and 2.\n")
-cat("A2(d): Stationary distribution = (1/2,1/2,0,0,0,0,0). Chain is not ergodic.\n")
+cat("Q2/A2(c): Simulated trajectories show eventual entry into {1,2}, after which the chain alternates between 1 and 2.\n")
+cat("Q2/A2(d): Stationary distribution = (1/2,1/2,0,0,0,0,0). Chain is not ergodic.\n")
 
-cat("\nA3 Summary:\n")
-cat("A3(a): Distribution at 6 PM = mu0 * P13^9 * P46^6.\n")
-cat("A3(b): 10,000 simulated trajectories verify the result numerically.\n")
+cat("\nQ3/A3 Summary:\n")
+cat("Q3/A3(a): Distribution at 6 PM = mu0 * P13^9 * P46^6.\n")
+cat("Q3/A3(b): 10,000 simulated trajectories verify the result numerically.\n")
 cat("Using the corrected matrix, the exact distribution at 6 PM is:\n")
 print(round(mu6, 6))
 
@@ -672,19 +669,19 @@ csv_summary_df <- data.frame(
     "11_A2_trajectories_data.csv"
   ),
   Description = c(
-    "A1: 5x5 transition matrix with state labels",
-    "A1: P^2000 limiting distribution from each starting state",
-    "A1: Steady-state probabilities with verification error",
-    "A1: Convergence data for P(Xn=S1) over time steps",
-    "A2: 7x7 transition matrix with state labels", 
-    "A2: Stationary distribution for all 7 states",
-    "A3: Analytical traffic distribution at 6PM",
-    "A3: Simulated traffic distribution (10,000 trajectories)",
-    "A3: Comparison between analytical and simulated results",
-    "A1: Complete trajectory data for 3 paths (60 steps each)",
-    "A2: Complete trajectory data for 2 paths (30 steps each)"
+    "Q1: 5x5 transition matrix with state labels",
+    "Q1: P^2000 limiting distribution from each starting state",
+    "Q1: Steady-state probabilities with verification error",
+    "Q1: Convergence data for P(Xn=S1) over time steps",
+    "Q2: 7x7 transition matrix with state labels", 
+    "Q2: Stationary distribution for all 7 states",
+    "Q3: Analytical traffic distribution at 6PM",
+    "Q3: Simulated traffic distribution (10,000 trajectories)",
+    "Q3: Comparison between analytical and simulated results",
+    "Q1: Complete trajectory data for 3 paths (60 steps each)",
+    "Q2: Complete trajectory data for 2 paths (30 steps each)"
   ),
-  Assignment = c(rep("A1", 4), rep("A2", 2), rep("A3", 3), "A1", "A2")
+  Assignment = c(rep("Q1", 4), rep("Q2", 2), rep("Q3", 3), "Q1", "Q2")
 )
 write.csv(csv_summary_df, file.path(results_dir, "00_CSV_Files_Summary.csv"), row.names = FALSE)
 
