@@ -14,9 +14,16 @@ This repository contains solutions for the Markov Chain assignment with three pa
 
 ## Usage
 To run the complete analysis:
+
 ```r
+# Set working directory to the assignment folder
+setwd("path/to/R227505V-Zvikomborero-Shumba--Stochastic-Assignment-")
+
+# Execute the analysis
 source("run_assignment.R")
 ```
+
+**Note**: Make sure to replace the path with the actual location where you downloaded the repository.
 
 ## Requirements
 - R (version 4.0+)
