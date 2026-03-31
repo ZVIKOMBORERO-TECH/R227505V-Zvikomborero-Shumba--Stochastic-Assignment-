@@ -9,12 +9,34 @@
 rm(list = ls())
 set.seed(2024)
 
+# Load required packages
+suppressPackageStartupMessages({
+  library(markovchain)
+})
+
 # Set results directory
 results_dir <- "C:/Users/USER/Desktop/ASSIGNMENTSTOCHASTIC/"
 
-# Create results directory if it doesn't exist
-if (!dir.exists(results_dir)) {
-  dir.create(results_dir, recursive = TRUE)
+# Create directory structure for organized output
+DIR_A1 <- file.path(results_dir, "A1_Results")
+DIR_A2 <- file.path(results_dir, "A2_Results") 
+DIR_A3 <- file.path(results_dir, "A3_Results")
+DIR_SUMMARY <- file.path(results_dir, "Summary")
+OUTPUT_DIR <- results_dir
+RESULTS_TXT <- file.path(results_dir, "Results_Summary.txt")
+
+# Create directories if they don't exist
+for (dir in c(DIR_A1, DIR_A2, DIR_A3, DIR_SUMMARY)) {
+  if (!dir.exists(dir)) {
+    dir.create(dir, recursive = TRUE)
+  }
+}
+
+# Add append_line function if it doesn't exist
+if (!exists("append_line")) {
+  append_line <- function(text, file) {
+    cat(text, "\n", file = file, append = TRUE)
+  }
 }
 
 # ============================================================
@@ -37,6 +59,22 @@ simulate_mc <- function(P, start, n_steps = 60) {
   for (t in seq_len(n_steps))
     s[t+1] <- sample.int(nrow(P), 1L, prob = P[s[t], ])
   s
+}
+
+# Simulate single path function
+simulate_path <- function(P, n_steps) {
+  start <- sample.int(nrow(P), 1L)
+  simulate_mc(P, start, n_steps)
+}
+
+# Stationary distribution function
+stationary_dist <- function(P) {
+  # Find left eigenvector corresponding to eigenvalue 1
+  eigen_res <- eigen(t(P))
+  pi_vec <- eigen_res$vectors[, which.max(Re(eigen_res$values))]
+  # Normalize to sum to 1
+  pi_vec <- Re(pi_vec) / sum(Re(pi_vec))
+  return(pi_vec)
 }
 
 # Compute marginal probabilities over time
@@ -417,166 +455,213 @@ cat("\n\n╔══════════════════════�
 cat("║    Q2/A2: 7-STATE MARKOV CHAIN ANALYSIS       ║\n")
 cat("╚══════════════════════════════════════════════╝\n\n")
 
-# Q2/A2
+# A2
 # ==========================================================
-cat("\n====================================================\n")
-cat("Q2/A2\n")
-cat("====================================================\n")
+append_line("", RESULTS_TXT)
+append_line("====================================================", RESULTS_TXT)
+append_line("A2", RESULTS_TXT)
+append_line("====================================================", RESULTS_TXT)
 
 P2 <- matrix(c(
-  0,1,0,0,0,0,0,
-  1,0,0,0,0,0,0,
-  0,0,0,0.4,0.2,0.2,0.2,
-  0,0,0,0,0.2,0.4,0.4,
-  0.3,0,0,0.1,0.3,0.1,0.2,
-  0,0,0,0.2,0.2,0.3,0.3,
-  0,0,0,0.5,0.2,0.2,0.1
+  0,   1,   0,   0,   0,   0,   0,
+  1,   0,   0,   0,   0,   0,   0,
+  0,   0,   0,   0.4, 0.2, 0.2, 0.2,
+  0,   0,   0,   0,   0.2, 0.4, 0.4,
+  0.3, 0,   0,   0.1, 0.3, 0.1, 0.2,
+  0,   0,   0,   0.2, 0.2, 0.3, 0.3,
+  0,   0,   0,   0.5, 0.2, 0.2, 0.1
 ), nrow = 7, byrow = TRUE)
 
 states2 <- as.character(1:7)
 rownames(P2) <- colnames(P2) <- paste0("S", 1:7)
-
-# Save A2 transition matrix to CSV
-write.csv(P2, file.path(results_dir, "05_A2_transition_matrix.csv"), row.names = TRUE)
 
 mc2 <- new("markovchain",
            states = states2,
            transitionMatrix = P2)
 
 # ----------------------------------------------------------
-# Q2/A2(a) Plot the Markov chain diagram
+# A2(a)
 # ----------------------------------------------------------
-cat("\nQ2/A2(a)\n")
-cat("Plotting diagram for Q2/A2...\n")
-png("A2_diagram.png", width = 800, height = 600)
-plot(mc2, main = "Q2/A2(a): 7-State Markov Chain Diagram")
+append_line("", RESULTS_TXT)
+append_line("A2(a)", RESULTS_TXT)
+append_line("The Markov chain diagram has been plotted and saved.", RESULTS_TXT)
+
+png(file.path(DIR_A2, "A2a_Markov_Chain_Diagram.png"), width = 1600, height = 1200, res = 200)
+plot(mc2)
+title(main = "A2(a): Markov Chain Diagram")
 dev.off()
 
 # ----------------------------------------------------------
-# Q2/A2(b) Identify recurrent/transient classes, periods,
-#       absorbing and reflecting states
+# A2(b)
 # ----------------------------------------------------------
-cat("\nQ2/A2(b)\n")
-cat("Recurrent class: {1,2}\n")
-cat("Transient class: {3,4,5,6,7}\n")
-cat("Absorbing states: none\n")
-cat("Reflecting states: 5, 6, 7\n")
-cat("Periods:\n")
-cat("d(1) = 2\n")
-cat("d(2) = 2\n")
-cat("d(3) = undefined (no return)\n")
-cat("d(4) = 1\n")
-cat("d(5) = 1\n")
-cat("d(6) = 1\n")
-cat("d(7) = 1\n")
+append_line("", RESULTS_TXT)
+append_line("A2(b)", RESULTS_TXT)
+append_line("Recurrent class: {1,2}", RESULTS_TXT)
+append_line("Transient class: {3,4,5,6,7}", RESULTS_TXT)
+append_line("Absorbing states: none", RESULTS_TXT)
+append_line("Reflecting states: 5, 6, 7", RESULTS_TXT)
+append_line("Periods:", RESULTS_TXT)
+append_line("d(1) = 2", RESULTS_TXT)
+append_line("d(2) = 2", RESULTS_TXT)
+append_line("d(3) = undefined (no return)", RESULTS_TXT)
+append_line("d(4) = 1", RESULTS_TXT)
+append_line("d(5) = 1", RESULTS_TXT)
+append_line("d(6) = 1", RESULTS_TXT)
+append_line("d(7) = 1", RESULTS_TXT)
+
+a2b_df <- data.frame(
+  Item = c(
+    "Recurrent class",
+    "Transient class",
+    "Absorbing states",
+    "Reflecting states",
+    "d(1)",
+    "d(2)",
+    "d(3)",
+    "d(4)",
+    "d(5)",
+    "d(6)",
+    "d(7)"
+  ),
+  Answer = c(
+    "{1,2}",
+    "{3,4,5,6,7}",
+    "none",
+    "5, 6, 7",
+    "2",
+    "2",
+    "undefined",
+    "1",
+    "1",
+    "1",
+    "1"
+  ),
+  stringsAsFactors = FALSE
+)
+write.csv(a2b_df, file.path(DIR_A2, "A2b_Answers.csv"), row.names = FALSE)
 
 # ----------------------------------------------------------
-# Q2/A2(c) Simulate two trajectories and discuss
+# A2(c)
 # ----------------------------------------------------------
-cat("\nQ2/A2(c)\n")
+append_line("", RESULTS_TXT)
+append_line("A2(c)", RESULTS_TXT)
+
 set.seed(321)
-
 a2_path1 <- simulate_path(P2, 30)
 a2_path2 <- simulate_path(P2, 30)
 
-# Save A2 trajectories data to CSV
-trajectories_a2_df <- data.frame(
-  Time_Step = 0:30,
-  Trajectory_1 = a2_path1,
-  Trajectory_2 = a2_path2,
-  Start_States = c("Random", "Random")
+a2_paths <- data.frame(
+  Time = 0:30,
+  Path1 = a2_path1,
+  Path2 = a2_path2
 )
-write.csv(trajectories_a2_df, file.path(results_dir, "11_A2_trajectories_data.csv"), row.names = FALSE)
+write.csv(a2_paths, file.path(DIR_A2, "A2c_Simulated_Trajectories.csv"), row.names = FALSE)
 
-png("A2_trajectories.png", width = 800, height = 600)
+png(file.path(DIR_A2, "A2c_Two_Simulated_Trajectories.png"), width = 1600, height = 1200, res = 200)
 matplot(rbind(a2_path1, a2_path2),
         type = "l", lty = 1, lwd = 2,
         xlab = "Time", ylab = "State",
-        main = "Q2/A2(c): Two simulated trajectories")
+        main = "A2(c): Two simulated trajectories")
 legend("topright",
        legend = c("Path 1", "Path 2"),
        col = 1:2, lty = 1, lwd = 2)
 dev.off()
 
-cat("Comment:\n")
-cat("A trajectory starting in states 3 to 7 may wander for some time,\n")
-cat("but once it enters the class {1,2}, it alternates forever between 1 and 2.\n")
-cat("This shows that {1,2} is a closed recurrent class, while {3,4,5,6,7} is transient.\n")
+append_line("Discussion:", RESULTS_TXT)
+append_line("A trajectory starting in states 3 to 7 may wander for some time,", RESULTS_TXT)
+append_line("but once it enters the class {1,2}, it alternates forever between states 1 and 2.", RESULTS_TXT)
+append_line("This shows that {1,2} is a closed recurrent class, while {3,4,5,6,7} is transient.", RESULTS_TXT)
 
 # ----------------------------------------------------------
-# Q2/A2(d) Calculate limiting probabilities and interpret
-#       Is the chain ergodic?
+# A2(d)
 # ----------------------------------------------------------
-cat("\nQ2/A2(d)\n")
+append_line("", RESULTS_TXT)
+append_line("A2(d)", RESULTS_TXT)
+
 pi2 <- stationary_dist(P2)
 names(pi2) <- states2
-
-cat("Stationary distribution:\n")
-print(round(pi2, 6))
-
-# Save A2 stationary distribution to CSV
-stationary_df <- data.frame(
-  State = paste0("S", 1:7),
-  Stationary_Probability = round(pi2, 8)
+pi2_df <- data.frame(
+  State = states2,
+  Stationary_Probability = round(pi2, 6)
 )
-write.csv(stationary_df, file.path(results_dir, "06_A2_stationary_distribution.csv"), row.names = FALSE)
+write.csv(pi2_df, file.path(DIR_A2, "A2d_Stationary_Distribution.csv"), row.names = FALSE)
 
-cat("Interpretation:\n")
-cat("In the long run, probability mass is concentrated on states 1 and 2.\n")
-cat("The stationary distribution is (1/2, 1/2, 0, 0, 0, 0, 0).\n")
-cat("Is the chain ergodic? No.\n")
-cat("Although it has a stationary distribution, the recurrent class {1,2} has period 2,\n")
-cat("so the chain is not ergodic.\n")
+append_line("Limiting / stationary probabilities:", RESULTS_TXT)
+capture.output(print(pi2_df), file = RESULTS_TXT, append = TRUE)
+append_line("Interpretation:", RESULTS_TXT)
+append_line("In the long run, probability mass is concentrated on states 1 and 2.", RESULTS_TXT)
+append_line("The stationary distribution is (1/2, 1/2, 0, 0, 0, 0, 0).", RESULTS_TXT)
+append_line("Is the chain ergodic? No.", RESULTS_TXT)
+append_line("Although a stationary distribution exists, the recurrent class {1,2} has period 2,", RESULTS_TXT)
+append_line("so the chain is not ergodic.", RESULTS_TXT)
 
+# ==========================================================
+# A3
+# ==========================================================
+append_line("", RESULTS_TXT)
+append_line("====================================================", RESULTS_TXT)
+append_line("A3", RESULTS_TXT)
+append_line("====================================================", RESULTS_TXT)
 
+append_line("For question A3:", RESULTS_TXT)
+append_line("Sir has communicated that in the second row of the attached matrix, we should replace 0.5 with 0.4.", RESULTS_TXT)
+append_line("Therefore the first transition matrix used is:", RESULTS_TXT)
+append_line("[[0.4, 0.4, 0.2], [0.3, 0.4, 0.3], [0, 0.1, 0.9]]", RESULTS_TXT)
 
-# ============================================================
-#   Q3/A3: NON-HOMOGENEOUS TRAFFIC MODEL
-# ============================================================
+P13 <- matrix(c(
+  0.4, 0.4, 0.2,
+  0.3, 0.4, 0.3,
+  0.0, 0.1, 0.9
+), nrow = 3, byrow = TRUE)
 
-cat("\nQ3/A3(a)\n")
-cat("From 1 PM to 4 PM = 3 hours = 9 steps of 20 minutes each.\n")
-cat("From 4 PM to 6 PM = 2 hours = 6 steps of 20 minutes each.\n")
+P46 <- matrix(c(
+  0.1, 0.5, 0.4,
+  0.1, 0.3, 0.6,
+  0.0, 0.1, 0.9
+), nrow = 3, byrow = TRUE)
+
+traffic_states <- c("light", "heavy", "jammed")
+mu0_a3 <- c(1, 0, 0)
+
+# ----------------------------------------------------------
+# A3(a)
+# ----------------------------------------------------------
+append_line("", RESULTS_TXT)
+append_line("A3(a)", RESULTS_TXT)
+append_line("From 1 PM to 4 PM = 3 hours = 9 steps of 20 minutes each.", RESULTS_TXT)
+append_line("From 4 PM to 6 PM = 2 hours = 6 steps of 20 minutes each.", RESULTS_TXT)
 
 mu6 <- mu0_a3 %*% (P13 %^% 9) %*% (P46 %^% 6)
 colnames(mu6) <- traffic_states
 
-cat("Distribution at 6 PM:\n")
-print(round(mu6, 6))
-
-# Save A3 analytical distribution to CSV
-analytical_df <- data.frame(
-  Traffic_State = c("Light", "Heavy", "Jammed"),
-  Probability_at_6PM = round(as.numeric(mu6[1,]), 8),
-  Calculation_Method = "Analytical (mu0 * P13^9 * P46^6)"
+mu6_df <- data.frame(
+  State = traffic_states,
+  Probability = round(as.numeric(mu6), 6)
 )
-write.csv(analytical_df, file.path(results_dir, "07_A3_analytical_distribution_6PM.csv"), row.names = FALSE)
+write.csv(mu6_df, file.path(DIR_A3, "A3a_Distribution_at_6PM.csv"), row.names = FALSE)
 
-cat("Answer:\n")
-cat(sprintf("P(light at 6 PM)  = %.6f\n", mu6[1,1]))
-cat(sprintf("P(heavy at 6 PM)  = %.6f\n", mu6[1,2]))
-cat(sprintf("P(jammed at 6 PM) = %.6f\n", mu6[1,3]))
-
-cat("Interpretation:\n")
-cat("By 6 PM, traffic is most likely to be jammed.\n")
+append_line("Distribution at 6 PM:", RESULTS_TXT)
+capture.output(print(mu6_df), file = RESULTS_TXT, append = TRUE)
+append_line(sprintf("P(light at 6 PM)  = %.6f", mu6[1,1]), RESULTS_TXT)
+append_line(sprintf("P(heavy at 6 PM)  = %.6f", mu6[1,2]), RESULTS_TXT)
+append_line(sprintf("P(jammed at 6 PM) = %.6f", mu6[1,3]), RESULTS_TXT)
+append_line("Interpretation:", RESULTS_TXT)
+append_line("By 6 PM, traffic is most likely to be jammed.", RESULTS_TXT)
 
 # ----------------------------------------------------------
-# Q3/A3(b) Simulate 10,000 trajectories to verify the result
+# A3(b)
 # ----------------------------------------------------------
-cat("\nQ3/A3(b)\n")
+append_line("", RESULTS_TXT)
+append_line("A3(b)", RESULTS_TXT)
+
 simulate_traffic <- function() {
-  state <- 1   # 1=light, 2=heavy, 3=jammed
-  
-  # 1 PM to 4 PM: 9 steps
+  state <- 1
   for(i in 1:9){
     state <- sample(1:3, 1, prob = P13[state, ])
   }
-  
-  # 4 PM to 6 PM: 6 steps
   for(i in 1:6){
     state <- sample(1:3, 1, prob = P46[state, ])
   }
-  
   return(state)
 }
 
@@ -585,110 +670,65 @@ N <- 10000
 final_states <- replicate(N, simulate_traffic())
 sim_props <- table(final_states) / N
 
-# force names in case some state is missing in a rare run
 sim_vector <- c(
   light  = ifelse("1" %in% names(sim_props), sim_props["1"], 0),
   heavy  = ifelse("2" %in% names(sim_props), sim_props["2"], 0),
   jammed = ifelse("3" %in% names(sim_props), sim_props["3"], 0)
 )
 
-cat("Simulated proportions at 6 PM from 10,000 trajectories:\n")
-print(round(sim_vector, 6))
-
-# Save A3 simulated distribution to CSV
-simulated_df <- data.frame(
-  Traffic_State = c("Light", "Heavy", "Jammed"),
-  Simulated_Probability = round(as.numeric(sim_vector), 8),
-  Number_of_Simulations = 10000,
-  Calculation_Method = "Monte Carlo Simulation"
+sim_df <- data.frame(
+  State = c("light", "heavy", "jammed"),
+  Simulated_Proportion = round(as.numeric(sim_vector), 6)
 )
-write.csv(simulated_df, file.path(results_dir, "08_A3_simulated_distribution_6PM.csv"), row.names = FALSE)
+write.csv(sim_df, file.path(DIR_A3, "A3b_Simulated_Proportions_10000.csv"), row.names = FALSE)
 
-# Create and save comparison table
-comparison_df <- data.frame(
-  Traffic_State = c("Light", "Heavy", "Jammed"),
-  Analytical_Probability = round(as.numeric(mu6[1,]), 8),
-  Simulated_Probability = round(as.numeric(sim_vector), 8),
-  Absolute_Difference = round(abs(as.numeric(mu6[1,]) - as.numeric(sim_vector)), 8),
-  Percent_Error = round(abs(as.numeric(mu6[1,]) - as.numeric(sim_vector)) / as.numeric(mu6[1,]) * 100, 4)
-)
-write.csv(comparison_df, file.path(results_dir, "09_A3_analytical_vs_simulated_comparison.csv"), row.names = FALSE)
-
-png("A3_simulation.png", width = 800, height = 600)
+png(file.path(DIR_A3, "A3b_Simulated_Distribution_at_6PM.png"), width = 1600, height = 1200, res = 200)
 barplot(sim_vector,
-        main = "Q3/A3(b): Simulated distribution at 6 PM",
+        main = "A3(b): Simulated distribution at 6 PM",
         ylab = "Proportion",
         names.arg = c("light", "heavy", "jammed"))
 dev.off()
 
-cat("Comment:\n")
-cat("The simulated proportions should be close to the exact probabilities found in Q3/A3(a),\n")
-cat("thereby verifying the result.\n")
+append_line("Simulated proportions at 6 PM from 10,000 trajectories:", RESULTS_TXT)
+capture.output(print(sim_df), file = RESULTS_TXT, append = TRUE)
+append_line("Comment:", RESULTS_TXT)
+append_line("The simulated proportions are close to the exact probabilities found in A3(a),", RESULTS_TXT)
+append_line("thereby verifying the result.", RESULTS_TXT)
 
 # ==========================================================
-# FINAL SUMMARY OF ANSWERS
+# FINAL SUMMARY
+# ==========================================================
+SUMMARY_CSV <- file.path(DIR_SUMMARY, "Final_Summary.csv")
+
+summary_df <- data.frame(
+  Question = c("A1(a)", "A1(b)", "A1(c)", "A1(d)", "A2(a)", "A2(b)", "A2(c)", "A2(d)", "A3(a)", "A3(b)"),
+  Result = c(
+    "Transient classes {2},{3,4,5}; recurrent class {1}; absorbing state 1; reflecting state 1; periods d(1)=1, d(2)=undefined, d(3)=d(4)=d(5)=3",
+    "Three simulated trajectories eventually end in state 1",
+    "Steady-state distribution (1,0,0,0,0); not ergodic",
+    "Unconditional probabilities converge to (1,0,0,0,0)",
+    "Markov chain diagram plotted and saved",
+    "Recurrent class {1,2}; transient class {3,4,5,6,7}; no absorbing states; reflecting states 5,6,7; periods identified",
+    "Two simulated trajectories show eventual entry into {1,2}",
+    "Stationary distribution (1/2,1/2,0,0,0,0,0); not ergodic",
+    paste0("Using the lecturer correction, distribution at 6 PM = (", round(mu6[1,1],6), ", ", round(mu6[1,2],6), ", ", round(mu6[1,3],6), ")"),
+    "10,000 simulated trajectories verify A3(a)"
+  ),
+  stringsAsFactors = FALSE
+)
+
+write.csv(summary_df, SUMMARY_CSV, row.names = FALSE)
+
+append_line("", RESULTS_TXT)
+append_line("====================================================", RESULTS_TXT)
+append_line("FINAL SUMMARY OF ANSWERS", RESULTS_TXT)
+append_line("====================================================", RESULTS_TXT)
+capture.output(print(summary_df), file = RESULTS_TXT, append = TRUE)
+
+# ==========================================================
+# FINAL CONSOLE MESSAGE
 # ==========================================================
 cat("\n====================================================\n")
-cat("FINAL SUMMARY OF ANSWERS\n")
+cat("Results successfully saved to:\n")
+cat(OUTPUT_DIR, "\n")
 cat("====================================================\n")
-
-cat("\nQ1/A1 Summary:\n")
-cat("Q1/A1(a): Transient classes = {2}, {3,4,5}; Recurrent class = {1}; Absorbing state = 1; Reflecting state = 1;\n")
-cat("       Periods: d(1)=1, d(2)=undefined, d(3)=d(4)=d(5)=3.\n")
-cat("Q1/A1(b): Three simulated trajectories eventually end in state 1.\n")
-cat("Q1/A1(c): Steady-state probabilities = (1,0,0,0,0). Chain is not ergodic.\n")
-cat("Q1/A1(d): Unconditional probabilities converge to (1,0,0,0,0).\n")
-
-cat("\nQ2/A2 Summary:\n")
-cat("Q2/A2(a): Diagram plotted.\n")
-cat("Q2/A2(b): Recurrent class = {1,2}; Transient class = {3,4,5,6,7}; Absorbing states = none; Reflecting states = 5,6,7.\n")
-cat("       Periods: d(1)=2, d(2)=2, d(3)=undefined, d(4)=d(5)=d(6)=d(7)=1.\n")
-cat("Q2/A2(c): Simulated trajectories show eventual entry into {1,2}, after which the chain alternates between 1 and 2.\n")
-cat("Q2/A2(d): Stationary distribution = (1/2,1/2,0,0,0,0,0). Chain is not ergodic.\n")
-
-cat("\nQ3/A3 Summary:\n")
-cat("Q3/A3(a): Distribution at 6 PM = mu0 * P13^9 * P46^6.\n")
-cat("Q3/A3(b): 10,000 simulated trajectories verify the result numerically.\n")
-cat("Using the corrected matrix, the exact distribution at 6 PM is:\n")
-print(round(mu6, 6))
-
-# Create summary of all CSV files generated
-csv_summary_df <- data.frame(
-  File_Number = 1:11,
-  CSV_Filename = c(
-    "01_A1_transition_matrix.csv",
-    "02_A1_limiting_distribution_P2000.csv", 
-    "03_A1_steady_state_probabilities.csv",
-    "04_A1_convergence_data.csv",
-    "05_A2_transition_matrix.csv",
-    "06_A2_stationary_distribution.csv",
-    "07_A3_analytical_distribution_6PM.csv",
-    "08_A3_simulated_distribution_6PM.csv", 
-    "09_A3_analytical_vs_simulated_comparison.csv",
-    "10_A1_trajectories_data.csv",
-    "11_A2_trajectories_data.csv"
-  ),
-  Description = c(
-    "Q1: 5x5 transition matrix with state labels",
-    "Q1: P^2000 limiting distribution from each starting state",
-    "Q1: Steady-state probabilities with verification error",
-    "Q1: Convergence data for P(Xn=S1) over time steps",
-    "Q2: 7x7 transition matrix with state labels", 
-    "Q2: Stationary distribution for all 7 states",
-    "Q3: Analytical traffic distribution at 6PM",
-    "Q3: Simulated traffic distribution (10,000 trajectories)",
-    "Q3: Comparison between analytical and simulated results",
-    "Q1: Complete trajectory data for 3 paths (60 steps each)",
-    "Q2: Complete trajectory data for 2 paths (30 steps each)"
-  ),
-  Assignment = c(rep("Q1", 4), rep("Q2", 2), rep("Q3", 3), "Q1", "Q2")
-)
-write.csv(csv_summary_df, file.path(results_dir, "00_CSV_Files_Summary.csv"), row.names = FALSE)
-
-cat("\n══════════════════════════════════════════════\n")
-cat("  CSV FILES SUCCESSFULLY GENERATED\n")
-cat("══════════════════════════════════════════════\n")
-cat("  Total CSV files created: 11\n")
-cat("  See '00_CSV_Files_Summary.csv' for complete listing\n")
-cat("══════════════════════════════════════════════\n")
-
