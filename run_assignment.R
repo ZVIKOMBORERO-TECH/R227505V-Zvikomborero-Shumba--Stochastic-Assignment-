@@ -1,1 +1,1 @@
-source("c:/Users/USER/Downloads/assignment_markov_analysis.R")
+source("assignment_markov_analysis.R")
